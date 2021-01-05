@@ -14,12 +14,18 @@ wsgi_app = app.wsgi_app
 @app.route('/')
 def hello():
     """Renders the landing page."""
+    return render_template('login.html')
+
+@app.route('/webapp')
+def renderData():
+    """Renders main menu"""
     return render_template('index.html')
 
-@app.route('/login')
-def renderData():
-    """Renders login page"""
-    return render_template('login.html')
+@app.errorhandler(404)
+def handle_404(e):
+    # handle all other routes here
+    #return send_from_directory('.','404.html')    
+    return  render_template('404.html')
 
 if __name__ == '__main__':
     import os

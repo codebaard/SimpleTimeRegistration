@@ -8,13 +8,23 @@
 
     <title>SimpleTimeRegistration</title>
 
-    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
 </head>
 
 <body>
-    <h1>Login to app</h1>
-    <p>this is supposed to be a real basic login form</p>
+    <h1>Login</h1>
+    <form>
+        <label for="user">Username:</label><br>
+        <input type="text" name="user"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" name="password">
+        <button class="button button1">Login</button>
+
+
+      </form>
+
+      <p>Go to <a href="webapp">/webapp</a> to see more.</p>
 
     <script src="js/scripts.js"></script>
 </body>
