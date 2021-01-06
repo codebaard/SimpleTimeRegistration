@@ -47,6 +47,9 @@ def create_app(test_config=None):
         #return send_from_directory('.','404.html')    
         return  render_template('404.html')
 
+    from . import databaseHandler as db
+    db.init_app(app)
+
     return app        
 
 """     if __name__ == '__main__':
