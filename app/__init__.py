@@ -50,6 +50,9 @@ def create_app(test_config=None):
     from . import databaseHandler as db
     db.init_app(app)
 
+    from . import loginHandler
+    app.register_blueprint(loginHandler.bp)
+
     return app        
 
 """     if __name__ == '__main__':
