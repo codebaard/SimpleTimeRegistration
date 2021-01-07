@@ -53,6 +53,10 @@ def create_app(test_config=None):
     from . import loginHandler
     app.register_blueprint(loginHandler.bp)
 
+    from . import displayHandler
+    app.register_blueprint(displayHandler.bp)
+    app.add_url_rule('/', endpoint='index')
+
     return app        
 
 """     if __name__ == '__main__':
