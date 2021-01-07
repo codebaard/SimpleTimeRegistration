@@ -31,22 +31,6 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/')
-    def hello():
-        """Renders the landing page."""
-        return render_template('login.html')
-
-    @app.route('/webapp')
-    def renderData():
-        """Renders main menu"""
-        return render_template('index.html')
-
-    @app.errorhandler(404)
-    def handle_404(e):
-        # handle all other routes here
-        #return send_from_directory('.','404.html')    
-        return  render_template('404.html')
-
     from . import databaseHandler as db
     db.init_app(app)
 
@@ -58,19 +42,3 @@ def create_app(test_config=None):
     app.add_url_rule('/', endpoint='index')
 
     return app        
-
-"""     if __name__ == '__main__':
-        import os
-        IsSystemOnDocker = os.getenv('ISDOCKER')
-
-        if IsSystemOnDocker:
-            HOST = '0.0.0.0'
-        else:
-            HOST = os.environ.get('SERVER_HOST', 'localhost')
-
-        try:
-            PORT = int(os.environ.get('SERVER_PORT', '5555'))
-        except ValueError:
-            PORT = 5555
-
-        app.run(HOST, PORT) """

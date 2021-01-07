@@ -9,9 +9,9 @@
         {% if g.user %}
             <li><span>{{ g.user['username'] }}</span>
             <li><a href="{{ url_for('login.logout') }}">Log Out</a>
-        {& else &}
-            <li><a href="{{ url_for('auth.register') }}">Register</a>
-            <li><a href="{{ url_for('auth.login') }}">Login</a>
+        {% else %}
+            <li><a href="{{ url_for('login.register') }}">Register</a>
+            <li><a href="{{ url_for('login.login') }}">Login</a>
         {% endif %}
     </ul>
 </nav>
