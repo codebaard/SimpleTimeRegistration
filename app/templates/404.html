@@ -1,1 +1,28 @@
-<h1>Error 404</h1>
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Time registration webapp">
+    <meta name="author" content="JuliusNeudecker">    
+</head>
+
+<title>{% block title %}{% endblock %} - TimeSquirrel</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<nav>
+    <h1><a href="{{ url_for('index') }}">TimeSquirrel</a></h1>
+    <ul>
+        {% if g.user %}
+            <li><span>{{ g.user['username'] }}</span>
+            <li><a href="{{ url_for('login.logout') }}">Log Out</a>
+        {% else %}
+            <li><a href="{{ url_for('login.register') }}">Register</a>
+            <li><a href="{{ url_for('login.login') }}">Login</a>
+        {% endif %}
+    </ul>
+</nav>
+
+<section>
+    {% block content %} <h1>Error 404 - The page you requested was not found :-(</h1> {% endblock %}
+</section>

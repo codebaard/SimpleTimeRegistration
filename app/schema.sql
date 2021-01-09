@@ -1,17 +1,27 @@
 DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS project;
+DROP TABLE IF EXISTS working_hour;
 
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL 
 );
 
-CREATE TABLE post (
-    id  INTEGER PRIMARY KEY AUTOINCREMENT,
-    author_id INTEGER NOT NULL,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    title TEXT NOT NULL,
-    body TEXT NOT NULL,
-    FOREIGN KEY (author_id) REFERENCES user (id)
+CREATE TABLE project (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    label TEXT UNIQUE NOT NULL,
+    owner_id INTEGER NOT NULL,
+    FOREIGN KEY (owner_id) REFERENCES user (id)
+);
+
+CREATE TABLE working_hour (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id INTEGER NOT NULL,
+    started TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    finished TIMESTAMP,
+    hours_total FLOAT,
+    label TEXT NOT NULL,
+    FOREIGN KEY (project_id) REFERENCES project (id)
 );
