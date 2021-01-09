@@ -12,7 +12,7 @@ bp = Blueprint('landing', __name__)
 @bp.route('/dashboard')
 @login_required
 def dashboard():
-    user_id = session.get('user_id')
+    user_id = g.user['id']
     db = get_db()
 
     print(user_id)
@@ -33,7 +33,14 @@ def dashboard():
     except:
         recent = None
 
-    return render_template('indexpage/dashboard.html', running=running, recent=recent)
+    try:
+        projects = db.execute(
+            'SELECT * FROM project WHERE user_id = ?', (user_id, )
+        ).fetchall()
+    except:
+        projects = None
+
+    return render_template('indexpage/dashboard.html', running=running, recent=recent, projects=projects)
 
 @bp.route('/authwall')
 def authwall():

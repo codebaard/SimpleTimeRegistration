@@ -15,14 +15,33 @@ bp = Blueprint('projects', __name__)
 @login_required
 def create():
     if request.method == 'POST':
-        project = request.form['project']
-        comment = request.form['comment']
+        label = request.form['label']
+        number = request.form['number']
+
+        try:
+            parent_id = request.form['parent_id']
+        except:
+            parent_id = None
+
         error = None
 
-        # do some errorhandling
+        if not label:
+            error = 'A projectname is required.'
 
-        db = get_db()
-        # write SQL and update
+        if not number:
+            error = 'A projectnumber is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'INSERT INTO project'
+                ' (external_id, label, parent_id, user_id, role_id)'
+                ' VALUES (?,?,?,?,?)',
+                (number, label, parent_id, g.user['id'], 1)
+            )
+            db.commit()
 
         return redirect(url_for('landing.dashboard'))
     return render_template('projects/create.html')
@@ -40,10 +59,12 @@ def stop():
 @bp.route('/<int:id>/edit', methods=('GET', 'POST'))
 @login_required
 def edit(id):
-    db = get_db()
+    #db = get_db()
 
     # SQL: find entry and display
     # SQL: update dataset upon POST
+
+    return redirect(url_for('landing.dashboard'))
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required

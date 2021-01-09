@@ -11,6 +11,7 @@ CREATE TABLE user (
 
 CREATE TABLE project (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    external_id TEXT NOT NULL,
     label TEXT UNIQUE NOT NULL,
     parent_id INTEGER NULL,
     user_id INTEGER NOT NULL,

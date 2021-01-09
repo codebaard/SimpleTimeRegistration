@@ -36,7 +36,7 @@ def register():
                 (username, generate_password_hash(password), email)
             )
             db.commit()
-            return redirect(url_for('login.login'))
+            return redirect(url_for('landing.dashboard'))
         
         flash(error)
 

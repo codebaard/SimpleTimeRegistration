@@ -5,8 +5,13 @@
 {% endblock %}
 
 {% block content %}
-    <p>
-        Nothing here yet.
-        Back to <a href="{{ url_for('landing.dashboard') }}">Dashboard</a>
-    </p>
+    <form method="POST">
+        <label for="label">Project Label</label>
+        <input name="label" id="label" value="{{ request.form['label'] }}" required>
+
+        <label for="number">Project Number</label>
+        <input name="number" id="number" value="{{ request.form['number'] }}" required>
+
+        <input type="submit" value="submit">
+    </form>
 {% endblock %}

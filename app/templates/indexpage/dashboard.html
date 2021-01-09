@@ -34,10 +34,15 @@
     {% endif %}
 
     <div>
-        <h2>Projects</h2>
-        <a href="{{ url_for('projects.create') }}">New Project</a>
+        <div>
+            <h2>Projects</h2>
+            <a href="{{ url_for('projects.create') }}">New Project</a>
+        </div>
+
         {% for project in projects %}
-            <span>{{ project['external_id'] }}:{{ project['label'] }} <a href="{{ url_for('projects.edit', id=project['id']) }}">Manage</a></span>
+            <div>
+                <span>{{ project['external_id'] }} : {{ project['label'] }} <a href="{{ url_for('projects.edit', id=project['id']) }}">Manage</a></span>
+            </div>
         {% endfor%}        
     </div>
 
