@@ -1,19 +1,28 @@
-#!/bin/sh
+#!/bin/bash
 
-FILE=/instance/config.py
-if test -f "$FILE"; then
+echo "Starting up..."
+
+echo "Checking variables:"
+echo "Package directory: $(pwd)/$FLASK_APP" 
+echo "Environment: $FLASK_ENV"
+
+echo "Checking config.py..."
+
+FILE=./instance/config.py
+if [ -f "$FILE" ]; then
     echo "$FILE already exists."
 else
     echo "Creating Secret..."
-    echo $(python -c 'import os; print(os.urandom(16))') > ./instance/config.py
+    echo $(python -c 'import os; print(os.urandom(16))') >> ./instance/config.py
 fi
 
-DATABASE=/instance/app.sqlite
-if test -f "$DATABASE"; then
-    echo "$DATABSE already exists."
+echo "Checking database..."
+DATABASE=./instance/app.sqlite
+if [ -f "$DATABASE" ]; then
+    echo "$DATABASE already exists."
 else
     echo "Creating Database..."
-    echo $(app init-db)
+    echo $(flask init-db)
 fi
 
 echo "Startig webserver..."
