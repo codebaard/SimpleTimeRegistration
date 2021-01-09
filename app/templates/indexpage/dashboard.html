@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Dashboard{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    {% if running %}
+        {% for dataset in running %}
+            <div>
+                <h2>You're currently clocked in.</h2>
+                <p>Time running since: {{ dataset['started'].strftime('%H:%M') }}</p>
+            </div>
+        {% endfor%}
+    {% else %}
+        <div>
+            <h2><a href="{{ url_for('hours.start') }}">CheckIn</a></h2>
+        </div>
+    {% endif %}
+
+    {% if recent %}
+        <h2>Recent activities:</h2>
+        <hr>
+
+        {% for dataset in recent %}
+            <div>
+                <h3>Project: [insert here]</h3>
+                <div>On {{ dataset['started'].strftime('%d-%m-%Y') }} for {{ dataset['hours_total'] }}h </div>
+            </div>
+            {% if not loop.last %}
+                <hr>
+            {% endif%}
+        {% endfor %}
+    {% endif %}
+
+    <div>
+        <h2>Projects</h2>
+        <a href="{{ url_for('projects.create') }}">New Project</a>
+        {% for project in projects %}
+            <span>{{ project['external_id'] }}:{{ project['label'] }} <a href="{{ url_for('projects.edit', id=project['id']) }}">Manage</a></span>
+        {% endfor%}        
+    </div>
+
+{% endblock %}

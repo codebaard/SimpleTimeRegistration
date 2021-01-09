@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}CheckIn{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    {% if not projects %}
+        <div>
+            <p>You've got no projects yet.</p>
+            <p>Go <a href="{{ url_for('projects.create') }}">create</a> one.</p>
+        </div>
+    {% else %}
+        <form method="POST">
+            <label for="project_id">Project</label>
+            <select name="project_id" id="project_id" required>
+                {% for project in projects %}
+                    <option value ="{{ project['id'] }}">{{ project['label'] }}</option>
+                {% endfor %}
+            </select>
+            <label for="comment">Comment</label>
+            <input type="text" name="comment" id="comment">
+        </form>
+    {% endif%}
+{% endblock %}
+

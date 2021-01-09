@@ -12,16 +12,28 @@ CREATE TABLE user (
 CREATE TABLE project (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     label TEXT UNIQUE NOT NULL,
-    owner_id INTEGER NOT NULL,
-    FOREIGN KEY (owner_id) REFERENCES user (id)
+    parent_id INTEGER NULL,
+    user_id INTEGER NOT NULL,
+    role_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (role_id) REFERENCES role (id),
+    FOREIGN KEY (parent_id) REFERENCES project (id)
 );
 
 CREATE TABLE working_hour (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
     started TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    finished TIMESTAMP,
-    hours_total FLOAT,
-    label TEXT NOT NULL,
+    finished TIMESTAMP NULL,
+    hours_total FLOAT NULL,
+    label TEXT NULL,
+    state BOOL NOT NULL,
     FOREIGN KEY (project_id) REFERENCES project (id)
+    FOREIGN Key (user_id) REFERENCES user (id)
+);
+
+CREATE TABLE role (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    label TEXT UNIQUE NOT NULL
 );

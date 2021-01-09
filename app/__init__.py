@@ -31,12 +31,18 @@ def create_app(test_config=None):
     from . import databaseHandler as db
     db.init_app(app)
 
-    from . import loginHandler
-    app.register_blueprint(loginHandler.bp)
-
-    from . import displayHandler
-    app.register_blueprint(displayHandler.bp)
+    from . import indexHandler
+    app.register_blueprint(indexHandler.bp)
     app.add_url_rule('/', endpoint='index')
+
+    from . import loginHandler
+    app.register_blueprint(loginHandler.bp)    
+
+    from . import hoursHandler
+    app.register_blueprint(hoursHandler.bp)
+
+    from . import projectsHandler
+    app.register_blueprint(projectsHandler.bp)
 
     from . import errorHandler as error
     app.register_error_handler(404, error.handle_404)
