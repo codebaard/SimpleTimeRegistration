@@ -14,6 +14,7 @@ if test -f "$DATABASE"; then
 else
     echo "Creating Database..."
     echo $(app init-db)
+fi
 
 echo "Startig webserver..."
 echo $(waitress-serve --call 'app:create_app')
