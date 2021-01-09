@@ -1,8 +1,13 @@
 #!/bin/sh
 
-echo "Creating Secret..."
-echo $(python -c 'import os; print(os.urandom(16))') > ./instance/config.py
+FILE=/instance/config.py
+if test -f "$FILE"; then
+    echo "$FILE already exists."
+else
+    echo "Creating Secret..."
+    echo $(python -c 'import os; print(os.urandom(16))') > ./instance/config.py
+fi
 
 echo "Startig webserver..."
-waitress-serve --call 'app:create_app'
+echo $(waitress-serve --call 'app:create_app')
 
