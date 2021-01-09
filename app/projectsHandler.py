@@ -25,7 +25,7 @@ def create():
         # write SQL and update
 
         return redirect(url_for('landing.dashboard'))
-    return render_template('hours/create')
+    return render_template('projects/create.html')
 
 @bp.route('/stop')
 @login_required
