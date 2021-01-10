@@ -1,11 +1,11 @@
 import functools
+import os
 
 from flask import(
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 
 from werkzeug.security import check_password_hash, generate_password_hash
-
 from app.databaseHandler import get_db 
 
 bp = Blueprint('login', __name__, url_prefix='/login')
@@ -32,17 +32,16 @@ def register():
         elif db.execute(
             'SELECT id FROM user WHERE email = ?', (email, )
         ).fetchone() is not None:
-            error = 'The email you entered is alreay being used.'            
+            error = 'The email you entered is alreay being used.'  
 
         if error is None:
             db.execute(
-                'INSERT INTO user (username, password, email) VALUES (?,?,?)',
-                (username, generate_password_hash(password), email)
+                'INSERT INTO user (username, password_hash, email) VALUES (?,?,?)',
+                (username, generate_password_hash(password), email) 
             )
             db.commit()
-            return redirect(url_for('landing.dashboard'))
-        
-        flash(error)
+            flash(error)
+            return redirect(url_for('landing.dashboard'))        
 
     return render_template('login/register.html')
 
@@ -59,7 +58,7 @@ def login():
 
         if user is None:
             error = 'User does not exist.'
-        elif not check_password_hash(user['password'], password):
+        elif not check_password_hash(user['password_hash'], password):
             error = 'Incorrect password.'
 
         if error == None:

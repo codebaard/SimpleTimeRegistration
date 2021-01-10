@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 
 from app.loginHandler import login_required
 from app.databaseHandler import get_db
+from app.helper import getTimestamp, getDeltaTimeDecimal
 
 bp = Blueprint('hours', __name__, url_prefix='/hours')
 
@@ -26,33 +27,41 @@ def checkIn():
 def start(project_id):
 
     db = get_db()
+    error = None
 
-    db.execute(
-        'INSERT INTO working_hour (project_id, user_id, state) VALUES (?,?,?)',
-        (project_id, g.user['id'], 1)
-    )
-    db.commit()
+    running = db.execute(
+        'SELECT * FROM working_hour where user_id = ? AND is_finished = ?',
+        (g.user['id'], 0)
+    ).fetchone()
+
+    if running is None:
+        db.execute(
+            'INSERT INTO working_hour (project_id, user_id, start_time, label, is_finished) VALUES (?,?,?,?,?)',
+            (project_id, g.user['id'], getTimestamp(), 'not set', 0)
+        )
+        db.commit()
+    else:
+        error = 'You are still checkedIn at {}. Please checkout first.'.format(running['external_id'] + running['label'])
+        flash(error)
 
     return redirect(url_for('landing.dashboard'))
-
-
 
 @bp.route('/<int:id>/stop', methods=('GET',))
 @login_required
 def stop(id):
     db = get_db()
 
-    timestamp = datetime.utcnow()
-    starttime = db.execute(
-        'SELECT * FROM working_hour WHERE id = ?', (id, )
+    end_time = getTimestamp()
+    dataset = db.execute(
+        'SELECT start_time, label FROM working_hour WHERE id = ?', (id, )
     ).fetchone()
 
-    hours_total = (timestamp - starttime['started']).total_seconds()/3600
+    total_time = getDeltaTimeDecimal(dataset['start_time'], end_time)
 
     db.execute(
-        'UPDATE working_hour SET finished = CURRENT_TIMESTAMP, state = ?, hours_total = ?'
+        'UPDATE working_hour SET end_time = ?, total_time = ?, is_finished = ?'
         ' WHERE id = ?',
-        (0, hours_total, id)
+        (end_time, total_time, 1, id)
     )
     db.commit()
 

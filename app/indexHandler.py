@@ -19,22 +19,20 @@ def dashboard():
     #ToDo: create joins for project data
     try:
         running = db.execute(
-            #'SELECT * FROM working_hour h JOIN project p ON p.user_id = h.user_id AND p.id = h.project_id WHERE h.user_id = ? AND h.state = ?', (user_id, 1)
-            'SELECT project.external_id, project.label, working_hour.id, working_hour.started'
+            'SELECT project.external_id, project.label, working_hour.id, working_hour.start_time'
             ' FROM working_hour INNER JOIN project ON project.user_id = working_hour.user_id AND'
-            ' project.id = working_hour.project_id WHERE working_hour.user_id = ? AND working_hour.state = ?', 
-            (user_id, 1)
+            ' project.id = working_hour.project_id WHERE working_hour.user_id = ? AND working_hour.is_finished = ?', 
+            (user_id, 0)
         ).fetchone()
     except:
         running = None
 
     try:
         recent = db.execute(
-            #'SELECT * FROM working_hour h JOIN project p ON p.user_id = h.user_id AND p.id = h.project_id WHERE h.user_id = ? AND h.state = ?', (user_id, 0)
-            'SELECT project.external_id, project.label, working_hour.id, working_hour.started, working_hour.hours_total'
+            'SELECT project.external_id, project.label, working_hour.id, working_hour.start_time, working_hour.total_time'
             ' FROM working_hour INNER JOIN project ON project.user_id = working_hour.user_id AND'
-            ' project.id = working_hour.project_id WHERE working_hour.user_id = ? AND working_hour.state = ?', 
-            (user_id, 0)
+            ' project.id = working_hour.project_id WHERE working_hour.user_id = ? AND working_hour.is_finished = ?', 
+            (user_id, 1)
         ).fetchall()
     except:
         recent = None
