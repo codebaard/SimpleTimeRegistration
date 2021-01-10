@@ -15,21 +15,21 @@ def dashboard():
     user_id = g.user['id']
     db = get_db()
 
-    print(user_id)
-
     #new users might have no entry. 
     #ToDo: create joins for project data
     try:
         running = db.execute(
-            'SELECT * FROM working_hour WHERE user_id = ? AND state = 1', (user_id, )
+            'SELECT * FROM working_hour WHERE user_id = ? AND state = ?', (user_id, 1)
         ).fetchone()
+ 
     except:
         running = None
 
     try:
         recent = db.execute(
-            'SELECT * FROM working_hour WHERE user_id = ? AND state = 0', (user_id, )
+            'SELECT * FROM working_hour h JOIN project p ON p.user_id = h.user_id WHERE h.user_id = ? AND h.state = ?', (user_id, 0)
         ).fetchall()
+
     except:
         recent = None
 

@@ -11,16 +11,11 @@
             <p>Go <a href="{{ url_for('projects.create') }}">create</a> one.</p>
         </div>
     {% else %}
-        <form method="POST">
-            <label for="project_id">Project</label>
-            <select name="project_id" id="project_id" required>
-                {% for project in projects %}
-                    <option value ="{{ project['id'] }}">{{ project['label'] }}</option>
-                {% endfor %}
-            </select>
-            <label for="comment">Comment</label>
-            <input type="text" name="comment" id="comment">
-        </form>
+        {% for project in projects %}
+            <div>
+                <span>{{ project['external_id'] }} : {{ project['label'] }} - <a href="{{ url_for('hours.start', project_id=project['id']) }}">Go to work</a></span>
+            </div>
+        {% endfor %}
     {% endif%}
 {% endblock %}
 
