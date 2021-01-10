@@ -8,7 +8,7 @@
     {% if running %}
         <div>
             <h2>You're currently checked in.</h2>
-            <span>Time running since: {{ running['started'].strftime('%H:%M') }}</span> 
+            <span>Time running since: {{ running['started'].strftime('%H:%M') }} for Project {{ running['external_id'] }} - {{ running['label'] }}</span> 
             <a href="{{ url_for('hours.stop', id=running['id']) }}">CheckOut</a>              
         </div>
     {% else %}
@@ -21,8 +21,8 @@
         <h2>Recent activities:</h2>
         {% for dataset in recent %}
             <div>
-                <h3>Project: {{ dataset['external_id'] }} : {{ dataset['label'] }}</h3>
-                <div>On {{ dataset['started'].strftime('%d-%m-%Y') }} for {{ dataset['hours_total'] }}h </div>
+                <h3>Project: {{ dataset['external_id'] }} - {{ dataset['label'] }}</h3>
+                <div>On {{ dataset['started'].strftime('%d.%m.%Y') }} for {{ dataset['hours_total']|round(2) }}h </div>
             </div>
         {% endfor %}
     {% endif %}

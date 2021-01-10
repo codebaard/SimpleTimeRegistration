@@ -64,7 +64,7 @@ def edit(id):
     # SQL: find entry and display
     # SQL: update dataset upon POST
 
-    return redirect(url_for('landing.dashboard'))
+    return render_template('projects/update.html')
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required

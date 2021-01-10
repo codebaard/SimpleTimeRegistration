@@ -42,18 +42,17 @@ def start(project_id):
 def stop(id):
     db = get_db()
 
-    timestamp = datetime.now()
+    timestamp = datetime.utcnow()
     starttime = db.execute(
         'SELECT * FROM working_hour WHERE id = ?', (id, )
     ).fetchone()
 
-    total = timestamp - starttime['started']
-    print(total)
+    hours_total = (timestamp - starttime['started']).total_seconds()/3600
 
     db.execute(
         'UPDATE working_hour SET finished = CURRENT_TIMESTAMP, state = ?, hours_total = ?'
         ' WHERE id = ?',
-        (0, str(total), id)
+        (0, hours_total, id)
     )
     db.commit()
 
