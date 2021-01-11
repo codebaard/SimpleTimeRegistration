@@ -40,8 +40,9 @@ def register():
                 (username, generate_password_hash(password), email) 
             )
             db.commit()
-            flash(error)
             return redirect(url_for('landing.dashboard'))        
+        
+        flash(error)
 
     return render_template('login/register.html')
 
@@ -64,9 +65,10 @@ def login():
         if error == None:
             session.clear()
             session['user_id'] = user['id']
+
             return redirect(url_for('index'))
 
-        flash(error)
+        flash(error)            
 
     return render_template('login/login.html')
 
