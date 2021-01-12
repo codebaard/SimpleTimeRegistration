@@ -71,6 +71,6 @@ def edit(id):
 def delete(id):
     get_post(id)
     db = get_db()
-    db.execute('DELETE FROM working_hour WHERE id = ?', (id,))
+    db.execute('DELETE FROM project WHERE id = ?', (id,))
     db.commit()
     return redirect(url_for('landing.dashboard'))
