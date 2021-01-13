@@ -46,25 +46,19 @@ def create():
         return redirect(url_for('landing.dashboard'))
     return render_template('projects/create.html')
 
-@bp.route('/stop')
-@login_required
-def stop():
-    db = get_db()
-
-    # SQL: find currently running dataset
-    # and end it, calculate hours and update dataset.
-
-    return redirect(url_for('landing.dashboard'))
-
 @bp.route('/<int:id>/edit', methods=('GET', 'POST'))
 @login_required
 def edit(id):
-    #db = get_db()
+    db = get_db()
 
-    # SQL: find entry and display
-    # SQL: update dataset upon POST
+    if request.method == 'POST'
+        
 
-    return render_template('projects/update.html')
+    projects = db.execute(
+        'SELECT * FROM project where id = ?', (id, )
+    ).fetchall()
+
+    return render_template('projects/update.html', project=project)
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
