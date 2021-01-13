@@ -58,13 +58,15 @@ def edit(id):
 
         db.execute(
             'UPDATE project SET label = ?, external_id = ? WHERE id = ?',
-            (newLabel, newExternal_id, id)
+            (newLabel, newExternal_id, id, )
         )
         db.commit()
 
-    projects = db.execute(
+        return redirect(url_for('landing.dashboard'))
+
+    project = db.execute(
         'SELECT * FROM project where id = ?', (id, )
-    ).fetchall()
+    ).fetchone()
 
     return render_template('projects/update.html', project=project)
 
