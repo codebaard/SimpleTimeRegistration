@@ -51,8 +51,16 @@ def create():
 def edit(id):
     db = get_db()
 
-    if request.method == 'POST'
-        
+    if request.method == 'POST':
+
+        newLabel = request.form['label']
+        newExternal_id = request.form['number']
+
+        db.execute(
+            'UPDATE project SET label = ?, external_id = ? WHERE id = ?',
+            (newLabel, newExternal_id, id)
+        )
+        db.commit()
 
     projects = db.execute(
         'SELECT * FROM project where id = ?', (id, )

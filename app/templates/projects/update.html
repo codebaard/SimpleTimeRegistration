@@ -5,17 +5,19 @@
 {% endblock %}
 
 {% block content%}
-    <h2>Delete your project</h2>
+    <h2>Update your project details</h2>
 
-    {% for project in projects %}
-    <div>
-        <span>{{ project['external_id'] }} : {{ project['label'] }} - <a href="{{ url_for('hours.start', project_id=project['id']) }}">Delete</a></span>
-    </div>
-    {% endblock %}
 
-    <form action="{{ url_for('projects.delete', id=post['id']) }}" method="POST">
-        <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+    <form method="POST">
+        <label for="label">Project Label</label>
+        <input name="label" id="label" value="{{ project['label'] }}" required>
+
+        <label for="number">Project Number</label>
+        <input name="number" id="number" value="{{ project['number'] }}" required>
+
+        <input type="submit" value="submit">
     </form>
 
     <span><a href="{{ url_for('landing.dashboard') }}">Go back</a></span>
-{% endblock%}
+
+{% endblock %}
