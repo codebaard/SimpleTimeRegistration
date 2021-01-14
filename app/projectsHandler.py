@@ -9,8 +9,6 @@ from app.databaseHandler import get_db
 
 bp = Blueprint('projects', __name__)
 
-##### THIS IS COPYCAT FROM HOURS: ACT WITH CARE!
-
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
@@ -69,6 +67,11 @@ def edit(id):
     ).fetchone()
 
     return render_template('projects/update.html', project=project)
+
+@bp.route('/<int:id>/export')
+@login_required
+def export(id):
+    return render_template('projects/export.html')
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
