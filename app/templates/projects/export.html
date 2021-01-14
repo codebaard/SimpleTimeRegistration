@@ -11,4 +11,6 @@
     {% endfor %}
 
     <h3>Hours total: {{ summary|round(2) }} </h3>
+
+    <span><a href="{{ url_for('landing.dashboard') }}">Go back</a></span>
 {% endblock %}
