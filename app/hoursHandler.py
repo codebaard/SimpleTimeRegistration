@@ -22,6 +22,21 @@ def checkIn():
 
     return render_template('hours/create.html', projects=projects)    
 
+@bp.route('/<int:id>/adddataset', methods=('GET', 'POST'))
+@login_required
+def addManual(id):
+    db = get_db()
+
+    if request.method == 'POST':
+        #submit
+        print("nothing here yet...")
+
+    project = db.execute(
+        'SELECT * FROM project WHERE id = ?', (id, )
+    ).fetchone()
+
+    return render_template('hours/manual.html', project=project)
+
 @bp.route('/<int:project_id>/start', methods=('GET',))
 @login_required
 def start(project_id):
