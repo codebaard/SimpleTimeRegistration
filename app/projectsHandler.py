@@ -71,7 +71,21 @@ def edit(id):
 @bp.route('/<int:id>/export')
 @login_required
 def export(id):
-    return render_template('projects/export.html')
+
+    db = get_db()
+    summary = 0
+    
+    hours = db.execute(
+        'SELECT project.external_id, project.label, working_hour.total_time FROM project' 
+        ' INNER JOIN working_hour ON project.id = working_hour.project_id' 
+        ' WHERE project.id = ? AND working_hour.is_finished = ?', 
+        (id, 1)
+    ).fetchall()
+
+    for h in hours:
+        summary += h['total_time']
+
+    return render_template('projects/export.html', hours=hours, summary=summary)
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required

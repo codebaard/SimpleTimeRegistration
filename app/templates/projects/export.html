@@ -5,5 +5,10 @@
 {% endblock %}
 
 {% block content %}
-<h1>nothing here yet...</h1>
+    <h2>Hours export:</h2>
+    {% for h in hours %}
+        <p>{{ h['external_id'] }} : {{ h['label'] }} - {{ h['total_time']|round(2) }}</p>
+    {% endfor %}
+
+    <h3>Hours total: {{ summary|round(2) }} </h3>
 {% endblock %}
