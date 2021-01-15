@@ -21,6 +21,7 @@ Small Flask based Webapp for easy time registration to create invoices, etc.
 * Consolidate html-templates
 * Refactor naming
 * Switch SQLite -> mySQL
+* Modular run-config
 
 ### Feature Backlog:
 * Add label to working hour dataset
@@ -28,6 +29,5 @@ Small Flask based Webapp for easy time registration to create invoices, etc.
 * Collaborative projects
 * Sleek GUI
 * Email verification
-* Modular run-config
 * User roles
 * Organisations
