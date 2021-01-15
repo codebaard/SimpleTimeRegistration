@@ -22,15 +22,26 @@ def checkIn():
 
     return render_template('hours/create.html', projects=projects)    
 
-@bp.route('/<int:id>/adddataset', methods=('GET', 'POST'))
+@bp.route('/<int:id>/addManual', methods=('GET', 'POST'))
 @login_required
 def addManual(id):
     db = get_db()
 
     if request.method == 'POST':
-        #submit
-        print("nothing here yet...")
 
+        start = convertDateTimeLocalToPythonUTC(request.form['starttime'])
+        end = convertDateTimeLocalToPythonUTC(request.form['endtime'])
+        total_time = getDeltaTimeDecimal(start, end)
+
+        db.execute(
+            'INSERT INTO working_hour '
+            ' (project_id, user_id, start_time, end_time, total_time, is_finished)'
+            ' VALUES (?,?,?,?,?,?)',
+            (id, g.user['id'], start, end, total_time, 1)
+        )   
+        db.commit()  
+        return redirect(url_for('landing.dashboard')) 
+              
     project = db.execute(
         'SELECT * FROM project WHERE id = ?', (id, )
     ).fetchone()
@@ -98,3 +109,14 @@ def delete(id):
     db.execute('DELETE FROM working_hour WHERE id = ?', (id,))
     db.commit()
     return redirect(url_for('landing.dashboard'))
+
+def convertDateTimeLocalToPythonUTC(dtString):
+    #Check if String is always formatted that way
+    #specifiy tz handling
+    year = int(dtString[:4])
+    month = int(dtString[5:7])
+    day = int(dtString[8:10])
+    hour = int(dtString[11:13])
+    minute = int(dtString[14:16])
+
+    return datetime(year, month, day, hour, minute)

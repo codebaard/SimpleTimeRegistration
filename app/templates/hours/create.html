@@ -14,8 +14,7 @@
         {% for project in projects %}
             <div>
                 <span>{{ project['external_id'] }} : {{ project['label'] }} - <a href="{{ url_for('hours.start', project_id=project['id']) }}">Go to work</a></span>
-                <br>
-                <a href="url_for(hours.addManual, id=project['id'])">...or enter manually.</a>
+                <a href="{{ url_for('hours.addManual', id=project['id']) }}">Or enter manually.</a>
             </div>
         {% endfor %}
     {% endif%}

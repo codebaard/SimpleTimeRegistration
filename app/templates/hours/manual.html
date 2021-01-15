@@ -1,9 +1,24 @@
-{% entends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block header %}
     <h1>{% block title %}Log hours manually{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-    <h3>nothing here yet...</h3>
+    <form method="POST">
+        <label for="label">{{ project['external_id'] }} : {{ project['label'] }} </label>
+        <br>
+        <br>
+        <label for="starttime">Start</label>
+        <input name="starttime" id="starttime" type="datetime-local" value="yyyy.mm.dd">
+        <br>
+        <br>
+        <label for="endtime">End</label>
+        <input name="endtime" id="endtime" type="datetime-local" value="yyyy.mm.dd">  
+        <br>
+        <br>
+        <input type="submit" value="submit">
+    </form>
+
+    <span><a href="{{ url_for('landing.dashboard') }}">Go back</a></span>
 {% endblock %}
