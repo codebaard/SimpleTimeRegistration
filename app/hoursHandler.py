@@ -101,14 +101,24 @@ def edit(id):
     # SQL: find entry and display
     # SQL: update dataset upon POST
 
-@bp.route('/<int:id>/delete', methods=('POST',))
+@bp.route('/<int:id>/delete', methods=('GET','POST'))
 @login_required
 def delete(id):
-    get_post(id)
     db = get_db()
-    db.execute('DELETE FROM working_hour WHERE id = ?', (id,))
-    db.commit()
-    return redirect(url_for('landing.dashboard'))
+
+    if request.method == 'POST':
+        db.execute('DELETE FROM working_hour WHERE id = ?', (id,))
+        db.commit()
+        return redirect(url_for('landing.dashboard'))
+
+    hours = db.execute(
+        'SELECT project.external_id, project.label, working_hour.start_time, working_hour.id FROM project' 
+        ' INNER JOIN working_hour ON project.id = working_hour.project_id' 
+        ' WHERE project.id = ? AND working_hour.is_finished = ?', 
+        (id, 1)
+    ).fetchall()
+
+    return render_template('hours/delete.html', hours=hours)
 
 def convertDateTimeLocalToPythonUTC(dtString):
     #Check if String is always formatted that way
