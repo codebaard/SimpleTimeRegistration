@@ -10,10 +10,10 @@ Small Flask based Webapp for easy time registration to create invoices, etc.
 * Create working hour dataset (Auto + Manual)
 * Print recent hours
 * Concise overview of particular project
+* Safe delete hour datasets
 
 ### In Development:
 * Export hours as csv
-* Safe delete datasets
 
 ### Technical Backog
 * Time handling: Server vs User vs tzinfo

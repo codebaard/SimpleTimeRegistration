@@ -120,6 +120,23 @@ def delete(id):
 
     return render_template('hours/delete.html', hours=hours)
 
+@bp.route('/<int:id>/exportcsv', methods=('GET', 'POST'))
+@login_required
+def csvExport(id):
+
+    db = get_db()
+
+    dataset = db.execute(
+        'SELECT project.external_id, project.label, working_hour.start_time, working_hour.end_time, working_hour.total_time, working_hour.label FROM project' 
+        ' INNER JOIN working_hour ON project.id = working_hour.project_id' 
+        ' WHERE project.id = ? AND working_hour.is_finished = ?', 
+        (id, 1)
+    ).fetchall()
+
+    handleCsvExport(dataset)
+
+    return redirect(url_for('landing.dashboard'))
+
 def convertDateTimeLocalToPythonUTC(dtString):
     #Check if String is always formatted that way
     #specifiy tz handling
@@ -130,3 +147,9 @@ def convertDateTimeLocalToPythonUTC(dtString):
     minute = int(dtString[14:16])
 
     return datetime(year, month, day, hour, minute)
+
+def handleCsvExport(dataset):
+
+    # put this into csv and let user download
+    for d in dataset:
+        print(str(d['external_id']) + ":" + str(d['label']) + " - " + str(round(d['total_time'],2)))
