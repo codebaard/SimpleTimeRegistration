@@ -356,6 +356,9 @@ instance/
 #batch file for local development
 setenv.bat
 
+#####################################
+#============ Sonarqube ============#
+#####################################
 
 # ---- Gradle
 build/
