@@ -1,5 +1,5 @@
 from flask import(
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, g, redirect, render_template, request, url_for, Response, stream_with_context
 )
 
 from werkzeug.exceptions import abort
@@ -120,22 +120,19 @@ def delete(id):
 
     return render_template('hours/delete.html', hours=hours)
 
-@bp.route('/<int:id>/exportcsv', methods=('GET', 'POST'))
+@bp.route('/<int:id>/export.csv', methods=('POST',))
 @login_required
 def csvExport(id):
+    def generate():
+        with app.app_context():
+            db = get_db()
 
-    db = get_db()
+            query = 'SELECT project.external_id, project.label, working_hour.start_time, working_hour.end_time, working_hour.total_time, working_hour.label FROM project INNER JOIN working_hour ON project.id = working_hour.project_id WHERE project.id = {} AND working_hour.is_finished = {}'.format(id, 1) 
 
-    dataset = db.execute(
-        'SELECT project.external_id, project.label, working_hour.start_time, working_hour.end_time, working_hour.total_time, working_hour.label FROM project' 
-        ' INNER JOIN working_hour ON project.id = working_hour.project_id' 
-        ' WHERE project.id = ? AND working_hour.is_finished = ?', 
-        (id, 1)
-    ).fetchall()
+            for row in db.execute(query):
+                yield printRow(row)
 
-    handleCsvExport(dataset)
-
-    return redirect(url_for('landing.dashboard'))
+    return Response(generate(), mimetype='text/csv')
 
 def convertDateTimeLocalToPythonUTC(dtString):
     #Check if String is always formatted that way
@@ -148,8 +145,11 @@ def convertDateTimeLocalToPythonUTC(dtString):
 
     return datetime(year, month, day, hour, minute)
 
-def handleCsvExport(dataset):
+def printRow(row):
+    start = str(row['start_time'])
+    end = str(row['end_time'])
+    total = str(row['total_time'])
+    return (row['external_id'] + ',' + row['label'] + ',' + start + ',' + end + ',' + total + ',' + row['label'] + '\n')
+    
 
-    # put this into csv and let user download
-    for d in dataset:
-        print(str(d['external_id']) + ":" + str(d['label']) + " - " + str(round(d['total_time'],2)))
+
