@@ -1,5 +1,5 @@
 from flask import(
-    Blueprint, flash, g, redirect, render_template, request, url_for, Response, stream_with_context
+    Blueprint, flash, g, redirect, render_template, request, url_for, Response, stream_with_context, current_app
 )
 
 from werkzeug.exceptions import abort
@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from app.loginHandler import login_required
 from app.databaseHandler import get_db
 from app.helper import getTimestamp, getDeltaTimeDecimal
+from flask import current_app as app
 
 bp = Blueprint('hours', __name__, url_prefix='/hours')
 
