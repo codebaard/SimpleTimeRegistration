@@ -7,7 +7,7 @@
 {% block content %}
     <h2>Hours export:</h2>
     {% for h in hours %}
-        <p>{{ h['external_id'] }} : {{ h['label'] }} - {{ h['total_time']|round(2) }}</p>
+        <p>{{ h['external_id'] }} : {{ h['label'] }}: Started {{ h['start_time'].strftime('%d.%m.%Y %H:%M') }} for {{ h['total_time']|round(2) }}h</p>
     {% endfor %}
 
     <h3>Hours total: {{ summary|round(2) }} </h3>

@@ -76,7 +76,7 @@ def export(id):
     summary = 0
 
     hours = db.execute(
-        'SELECT project.id, project.external_id, project.label, working_hour.total_time FROM project' 
+        'SELECT project.id, project.external_id, project.label, working_hour.start_time, working_hour.total_time FROM project' 
         ' INNER JOIN working_hour ON project.id = working_hour.project_id' 
         ' WHERE project.id = ? AND working_hour.is_finished = ?', 
         (id, 1)
